@@ -29,6 +29,7 @@ class _PesanScreenState extends State<PesanScreen> {
   int totalHarga = 0;
   int totalVoucher = 0;
   bool isVoucher = false;
+  bool isSuccess = false;
   final ctrlVoucher = TextEditingController();
 
   MoneyFormatter fmf_totalPesan = MoneyFormatter(
@@ -121,6 +122,9 @@ class _PesanScreenState extends State<PesanScreen> {
 
     if (response.statusCode == 200) {
       print('Data successfully posted');
+      setState(() {
+        isSuccess = true;
+      });
     } else {
       print('Error : ${response.statusCode}');
     }
@@ -337,12 +341,19 @@ class _PesanScreenState extends State<PesanScreen> {
                             onPressed: () {
                               insertData(dataOrder, totalPesan, totalHarga);
                             },
-                            child: Text(
-                              'Pesan Sekarang',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            )),
+                            child: !isSuccess
+                                ? Text(
+                                    'Pesan Sekarang',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    'Batalkan',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  )),
                         SizedBox(
                           width: 20,
                         )
